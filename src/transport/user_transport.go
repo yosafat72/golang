@@ -1,9 +1,9 @@
 package transport
 
 import (
-	"fmt"
 	userUsecase "go-echo/src/usecase/user"
 
+	resp "go-echo/src/shared/utils"
 	userReq "go-echo/src/usecase/user/request"
 
 	"github.com/labstack/echo/v4"
@@ -23,16 +23,13 @@ func (tp *userTransport) FindByIdUser() func(echo.Context) error {
 	return func(ctx echo.Context) error {
 		var userId userReq.UserReq
 
-		name := ctx.FormValue("idUser")
-
-		fmt.Println(name)
+		ctx.Bind(&userId)
 
 		res, httpStatusCode, code, err := tp.UserUC.FindByIdUser(userId)
-		_ = code
 		if err != nil {
-			return ctx.JSON(httpStatusCode, res)
+			return resp.SetResponse(ctx, httpStatusCode, code, nil)
 		}
 
-		return ctx.JSON(200, res)
+		return resp.SetResponse(ctx, 200, code, res)
 	}
 }
