@@ -17,6 +17,10 @@ func NewUserRepo(postgres *database.PostgreSQL) UserRepo {
 
 func (s *userRepo) FindByIdUser(in string) (out models.User, err error) {
 	err = s.postgres.Where("id_user = ?", in).Find(&out).Error
-	err = s.postgres.Error
+	return
+}
+
+func (s *userRepo) SaveUser(in models.User) (out models.User, err error) {
+	err = s.postgres.Create(&in).Error
 	return
 }

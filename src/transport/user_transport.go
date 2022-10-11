@@ -33,3 +33,18 @@ func (tp *userTransport) FindByIdUser() func(echo.Context) error {
 		return resp.SetResponse(ctx, 200, code, res)
 	}
 }
+
+func (tp *userTransport) SaveUser() func(echo.Context) error {
+	return func(ctx echo.Context) error {
+		var user userReq.UserSaveReq
+
+		ctx.Bind(&user)
+
+		_, httpStatusCode, code, err := tp.UserUC.SaveUser(user)
+		if err != nil {
+			return resp.SetResponse(ctx, httpStatusCode, code, nil)
+		}
+
+		return resp.SetResponse(ctx, 200, code, nil)
+	}
+}

@@ -1,9 +1,11 @@
 package user
 
 import (
+	"go-echo/src/models"
 	userRepo "go-echo/src/repository/user"
 	request "go-echo/src/usecase/user/request"
 	response "go-echo/src/usecase/user/response"
+	"math/rand"
 )
 
 type userUsecase struct {
@@ -32,5 +34,27 @@ func (uc *userUsecase) FindByIdUser(in request.UserReq) (out response.UserRep, h
 
 	httpCode = 200
 	code = "M1"
+	return
+}
+
+func (uc *userUsecase) SaveUser(in request.UserSaveReq) (out response.UserRep, httpCode int, code string, err error) {
+	var data models.User
+
+	data.IdUser = int64(rand.Intn(100))
+	data.NmUser = in.NmUser
+	data.DobUser = in.DobUser
+	data.GenderUser = in.GenderUser
+	data.PhoneUser = in.PhoneUser
+	data.EmailUser = in.EmailUser
+	data.DescUser = in.DescUser
+
+	_, err = uc.userRepo.SaveUser(data)
+	if err != nil {
+		code = "ERR"
+		return
+	}
+
+	code = "Berhasil menyimpan data!"
+
 	return
 }

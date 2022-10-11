@@ -7,4 +7,5 @@ import (
 
 type UserUsecase interface {
 	FindByIdUser(in request.UserReq) (out response.UserRep, httpCode int, code string, err error)
+	SaveUser(in request.UserSaveReq) (out response.UserRep, httpCode int, code string, err error)
 }
