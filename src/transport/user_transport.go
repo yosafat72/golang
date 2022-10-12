@@ -21,11 +21,9 @@ func NewUserTransport(userUsecase userUsecase.UserUsecase) *userTransport {
 
 func (tp *userTransport) FindByIdUser() func(echo.Context) error {
 	return func(ctx echo.Context) error {
-		var userId userReq.UserReq
+		body := ctx.Get("body").(userReq.UserReq)
 
-		ctx.Bind(&userId)
-
-		res, httpStatusCode, code, err := tp.UserUC.FindByIdUser(userId)
+		res, httpStatusCode, code, err := tp.UserUC.FindByIdUser(body)
 		if err != nil {
 			return resp.SetResponse(ctx, httpStatusCode, code, nil)
 		}

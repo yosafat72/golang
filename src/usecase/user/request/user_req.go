@@ -1,7 +1,7 @@
 package request
 
 type UserReq struct {
-	IdUser string `json:"idUser"`
+	IdUser string `json:"idUser" binding:"required" validate:"required"`
 }
 
 type UserSaveReq struct {

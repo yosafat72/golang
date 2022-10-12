@@ -4,6 +4,8 @@ import (
 	transport "go-echo/src/transport"
 	"net/http"
 
+	middleware "go-echo/src/interface/middleware/user"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,5 +17,7 @@ func setupRouter(transport *transport.Tp, app *echo.Echo) {
 
 	app.POST("/", transport.UserTransport.FindByIdUser())
 	app.POST("/save", transport.UserTransport.SaveUser())
+
+	app.Use(middleware.FindByIdUserValidator)
 
 }

@@ -1,6 +1,8 @@
 package utils
 
-import echo "github.com/labstack/echo/v4"
+import (
+	echo "github.com/labstack/echo/v4"
+)
 
 type JSONResponse struct {
 	Code    int         `json:"code"`
