@@ -30,3 +30,13 @@ func (s *userRepo) SaveUser(in models.User) (out models.User, err error) {
 	err = s.postgres.Create(&in).Error
 	return
 }
+
+func (s *userRepo) UpdateUser(in models.User) (out models.User, err error) {
+	err = s.postgres.Save(&out).Error
+	return
+}
+
+func (s *userRepo) DeleteUser(in string) (out models.User, err error) {
+	err = s.postgres.Where("id_user = ?", in).Delete(&out).Error
+	return
+}
