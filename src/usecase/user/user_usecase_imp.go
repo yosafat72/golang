@@ -18,6 +18,23 @@ func NewUserUsecase(userRepo userRepo.UserRepo) UserUsecase {
 	}
 }
 
+func (uc *userUsecase) FindAllUsers() (out []response.UserRep, httpCode int, code string, err error) {
+	data, err := uc.userRepo.FindAllUsers()
+	if err != nil {
+		code = "ERR"
+		return
+	}
+
+	for _, s := range data {
+		resp := response.UserRep{NmUser: s.NmUser, DobUser: s.DobUser, GenderUser: s.GenderUser, PhoneUser: s.PhoneUser, EmailUser: s.EmailUser, DescUser: s.DescUser}
+		out = append(out, resp)
+	}
+
+	httpCode = 200
+	code = "M1"
+	return
+}
+
 func (uc *userUsecase) FindByIdUser(in request.UserReq) (out response.UserRep, httpCode int, code string, err error) {
 	data, err := uc.userRepo.FindByIdUser(in.IdUser)
 	if err != nil {
@@ -25,12 +42,8 @@ func (uc *userUsecase) FindByIdUser(in request.UserReq) (out response.UserRep, h
 		return
 	}
 
-	out.NmUser = data.NmUser
-	out.DobUser = data.DobUser
-	out.GenderUser = data.GenderUser
-	out.PhoneUser = data.PhoneUser
-	out.EmailUser = data.EmailUser
-	out.DescUser = data.DescUser
+	resp := response.UserRep{NmUser: data.NmUser, DobUser: data.DobUser, GenderUser: data.GenderUser, PhoneUser: data.PhoneUser, EmailUser: data.EmailUser, DescUser: data.DescUser}
+	out = resp
 
 	httpCode = 200
 	code = "M1"

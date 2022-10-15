@@ -15,6 +15,7 @@ func setupRouter(transport *transport.Tp, app *echo.Echo) {
 		return c.String(http.StatusOK, "Yosafat Hermawan S")
 	})
 
+	app.POST("/allUsers", transport.UserTransport.FindAllUsers())
 	app.POST("/", transport.UserTransport.FindByIdUser())
 	app.POST("/save", transport.UserTransport.SaveUser())
 

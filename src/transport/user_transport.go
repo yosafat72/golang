@@ -19,6 +19,19 @@ func NewUserTransport(userUsecase userUsecase.UserUsecase) *userTransport {
 	}
 }
 
+func (tp *userTransport) FindAllUsers() func(echo.Context) error {
+	return func(ctx echo.Context) error {
+		// body := ctx.Get("body").(userReq.UserReq)
+
+		res, httpStatusCode, code, err := tp.UserUC.FindAllUsers()
+		if err != nil {
+			return resp.SetResponse(ctx, httpStatusCode, code, nil)
+		}
+
+		return resp.SetResponse(ctx, 200, code, res)
+	}
+}
+
 func (tp *userTransport) FindByIdUser() func(echo.Context) error {
 	return func(ctx echo.Context) error {
 		body := ctx.Get("body").(userReq.UserReq)
