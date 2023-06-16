@@ -13,10 +13,10 @@ type Container struct {
 func SetupContainer() Container {
 
 	//Setup database
-	postgres := database.SetupPostgres()
+	mysql := database.SetupMysql()
 
 	//init repo
-	userRepository := userRepo.NewUserRepo(postgres)
+	userRepository := userRepo.NewUserRepo(mysql)
 
 	//init usecase
 	userCase := userUsecase.NewUserUsecase(userRepository)

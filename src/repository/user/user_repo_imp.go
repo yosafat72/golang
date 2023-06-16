@@ -6,37 +6,37 @@ import (
 )
 
 type userRepo struct {
-	postgres *database.PostgreSQL
+	mysql *database.MySql
 }
 
-func NewUserRepo(postgres *database.PostgreSQL) UserRepo {
+func NewUserRepo(mysql *database.MySql) UserRepo {
 	return &userRepo{
-		postgres: postgres,
+		mysql: mysql,
 	}
 }
 
 func (s *userRepo) FindAllUsers() (out []models.User, err error) {
-	result := s.postgres.Find(&out)
+	result := s.mysql.Find(&out)
 	err = result.Error
 	return
 }
 
 func (s *userRepo) FindByIdUser(in string) (out models.User, err error) {
-	err = s.postgres.Where("id_user = ?", in).Find(&out).Error
+	err = s.mysql.Where("id_user = ?", in).Find(&out).Error
 	return
 }
 
 func (s *userRepo) SaveUser(in models.User) (out models.User, err error) {
-	err = s.postgres.Create(&in).Error
+	err = s.mysql.Create(&in).Error
 	return
 }
 
 func (s *userRepo) UpdateUser(in models.User) (out models.User, err error) {
-	err = s.postgres.Save(&out).Error
+	err = s.mysql.Save(&out).Error
 	return
 }
 
 func (s *userRepo) DeleteUser(in string) (out models.User, err error) {
-	err = s.postgres.Where("id_user = ?", in).Delete(&out).Error
+	err = s.mysql.Where("id_user = ?", in).Delete(&out).Error
 	return
 }
