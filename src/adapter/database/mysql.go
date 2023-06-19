@@ -13,7 +13,7 @@ type MySql struct {
 
 func SetupMysql() *MySql {
 	fmt.Println("Starting to connect database")
-	dsn := "root@tcp(localhost:3306)/database?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root@tcp(localhost:3306)/db_crud?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
