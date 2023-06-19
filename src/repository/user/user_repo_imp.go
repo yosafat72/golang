@@ -3,6 +3,9 @@ package user
 import (
 	database "go-echo/src/adapter/database"
 	models "go-echo/src/models"
+	"go-echo/src/shared/utils"
+
+	"github.com/reactivex/rxgo/v2"
 )
 
 type userRepo struct {
@@ -39,4 +42,15 @@ func (s *userRepo) UpdateUser(in models.User) (out models.User, err error) {
 func (s *userRepo) DeleteUser(in string) (out models.User, err error) {
 	err = s.mysql.Where("id_user = ?", in).Delete(&out).Error
 	return
+}
+
+// FetchUsers implements UserRepo.
+func (s *userRepo) FetchUsers() utils.ObservableResult {
+	var users []models.User
+	result := s.mysql.Find(&users)
+	err := result.Error
+	return utils.ObservableResult{
+		Result: rxgo.Just(users)(),
+		Error:  err,
+	}
 }

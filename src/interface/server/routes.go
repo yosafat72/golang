@@ -17,6 +17,8 @@ func setupRouter(transport *transport.Tp, app *echo.Echo) {
 	app.POST("/", transport.UserTransport.FindByIdUser())
 	app.POST("/save", transport.UserTransport.SaveUser())
 
+	app.POST("/rx", transport.UserTransport.FetchUsers)
+
 	// app.Use(middleware.FindByIdUserValidator)
 
 }

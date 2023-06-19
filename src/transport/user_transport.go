@@ -2,6 +2,7 @@ package transport
 
 import (
 	userUsecase "go-echo/src/usecase/user"
+	"net/http"
 
 	resp "go-echo/src/shared/utils"
 	userReq "go-echo/src/usecase/user/request"
@@ -58,4 +59,19 @@ func (tp *userTransport) SaveUser() func(echo.Context) error {
 
 		return resp.SetResponse(ctx, 200, code, nil)
 	}
+}
+
+func (tp *userTransport) FetchUsers(c echo.Context) error {
+
+	observable := tp.UserUC.FetchUsers()
+
+	ch := observable.Result.Observe()
+	item := <-ch
+
+	if item.E != nil {
+		return resp.SetResponse(c, http.StatusInternalServerError, observable.Error.Error(), nil)
+	}
+
+	return resp.SetResponse(c, http.StatusOK, "Success", item.V)
+
 }

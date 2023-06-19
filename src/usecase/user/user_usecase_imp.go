@@ -1,8 +1,10 @@
 package user
 
 import (
+	"context"
 	"go-echo/src/models"
 	userRepo "go-echo/src/repository/user"
+	"go-echo/src/shared/utils"
 	request "go-echo/src/usecase/user/request"
 	response "go-echo/src/usecase/user/response"
 	"math/rand"
@@ -70,4 +72,22 @@ func (uc *userUsecase) SaveUser(in request.UserSaveReq) (out response.UserRep, h
 	code = "Berhasil menyimpan data!"
 
 	return
+}
+
+// FetchUsers implements UserUsecase.
+func (uc *userUsecase) FetchUsers() utils.ObservableResult {
+
+	observable := uc.userRepo.FetchUsers()
+
+	newObservable := observable.Result.Map(func(ctx context.Context, i interface{}) (interface{}, error) {
+		users := i.(models.User)
+		usersResp := response.NewUserResponseMapper().ToResponse(users)
+		return usersResp, nil
+	})
+
+	return utils.ObservableResult{
+		Result: newObservable,
+		Error:  observable.Error,
+	}
+
 }
